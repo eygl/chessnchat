@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket Chat</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/chessboard-1.0.0.css">
+    <script src="https://unpkg.com/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/1.0.0/chess.min.js"></script>
+</head>
+<body>
+    <div id="board" style="width: 400px"></div>
+    <div class="chat-box">
+        <div id="messages" class="messages" hx-swap-oob="beforeend"></div>
+        <input id="messageInput" placeholder="Type a message..." autocomplete="off">
+    </div>
+
+    <!-- Name Prompt Modal -->
+    <div id="nameModal" class="modal">
+        <div class="modal-content">
+            <h3>Enter Your Name</h3>
+            <input id="nameInput" type="text" placeholder="Your name">
+            <button onclick="saveName()">Join Chat</button>
+        </div>
+    </div>
+
+    <script>
+        const socket = io();
+
+        // Local storage check
+        function getName() {
+            return localStorage.getItem('chat_username');
+        }
+
+        function saveName() {
+            const name = document.getElementById('nameInput').value.trim();
+            if (name) {
+                localStorage.setItem('chat_username', name);
+                document.getElementById('nameModal').style.display = 'none';
+            }
+        }
+
+        // Check for name on load
+        window.onload = () => {
+            if (!getName()) {
+                document.getElementById('nameModal').style.display = 'flex';
+            }
+        }
+
+        document.getElementById('messageInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && this.value.trim() !== '') {
+                const username = getName();
+                if (!username) return;
+                socket.emit('chat message', {
+                    message: this.value,
+                    name: username
+                });
+                this.value = '';
+            }
+        });
+
+        socket.on('chat message', function(data) {
+            const wrapper = document.createElement('div');
+            wrapper.innerHTML = data.html;
+            document.getElementById('messages').appendChild(wrapper.firstChild);
+            document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
+        });
+    </script>
+</body>
+</html>

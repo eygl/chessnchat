@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chess & Chat</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
+    <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+    <script src="/static/chess.min.js"></script>
+    <script src="/static/chessboard.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div id="board" class="board"></div>
+        <div class="chat">
+            <div id="messages" class="messages"></div>
+            <input id="chatInput" placeholder="Type a message...">
+        </div>
+    </div>
+
+    <script>
+        const socket = io();
+
+        // Chess game logic
+        const game = new Chess();
+        const board = Chessboard('board', {
+            draggable: true,
+            position: 'start',
+            onDrop: (source, target) => {
+                const move = game.move({ from: source, to: target, promotion: 'q' });
+                if (move === null) return 'snapback';
+                socket.emit('move', { from: source, to: target });
+            }
+        });
+
+        socket.on('move', data => {
+            game.move({ from: data.from, to: data.to, promotion: 'q' });
+            board.position(game.fen());
+        });
+
+        // Chat
+        const input = document.getElementById('chatInput');
+        input.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                socket.emit('chat message', input.value);
+                input.value = '';
+            }
+        });
+
+        socket.on('chat message', function (msg) {
+            const messages = document.getElementById('messages');
+            messages.innerHTML += `<div>${msg}</div>`;
+            messages.scrollTop = messages.scrollHeight;
+        });
+    </script>
+</body>
+</html>

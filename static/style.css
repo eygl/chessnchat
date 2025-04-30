@@ -1,0 +1,83 @@
+body {
+    font-family: sans-serif;
+    background: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+h2 {
+  padding: 0;
+  margin: 0;
+  margin-top: 0.5rem;
+}
+
+
+.messages {
+    height: 20%;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    padding: 5px;
+    margin-bottom: 10px;
+    background: #fafafa;
+}
+
+.message {
+    margin-bottom: 5px;
+    padding: 5px;
+    border-bottom: 1px solid #eee;
+}
+
+input {
+    padding: 10px;
+    font-size: 0.7em;
+}
+
+
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.name {
+    font-size: 0.8em;
+    color: gray;
+    margin-top: 2px;
+    align-self: center;
+}
+
+.no-scroll {
+    overflow: hidden;
+}
+
+
+#board { 
+  width: 20rem; 
+  margin: auto; 
+  touch-action: none;         /* Disables default touch gestures */
+  -ms-touch-action: none;     /* For IE/Edge */
+  user-select: none;
+}
+#messages { 
+  align-self: center; 
+  height: 16rem; 
+  width: 20rem; 
+  overflow-y: scroll; 
+  border: 1px solid #ccc; 
+  margin-bottom: 10px; 
+}

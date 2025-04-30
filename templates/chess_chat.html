@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess n Chat</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/chessboard-1.0.0.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/chessboard-1.0.0.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.js "></script>
+    <style>
+    </style>
+</head>
+<body>
+    <h2 style="text-align:center;">Chess n Chat</h2>
+    <div style="text-align:center;" id="game-status"></div>
+    <div id="board"></div>
+
+    <div id="messages"></div>
+    <div id="chat-box" style="display:flex; flex-direction: row; align-self: center;">
+        <input id="name" placeholder="Name"><br>
+        <input id="message" placeholder="Type a message"><button onclick="sendMessage()">Send</button>
+    </div>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
+    <script src="/static/game.js"></script>
+</body>
+</html>
